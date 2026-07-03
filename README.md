@@ -17,6 +17,31 @@ The architecture follows a polyglot microservices approach where each service ow
 | 💳 **Checkout**     | Node.js            | Checkout workflow                 | Amazon ElastiCache Redis           |
 | 📑 **Orders**       | Spring Boot        | Order processing and fulfillment  | Amazon RDS PostgreSQL + Amazon SQS |
 
+# Repository Structure
+
+```text
+retail-store-v2-platform/
+│
+├── applications/
+│   ├── ui/
+│   ├── catalog/
+│   ├── carts/
+│   ├── checkout/
+│   ├── orders/
+│
+├── docker/
+│
+├── terraform/
+│
+├── observability/
+│
+├── docs/
+├── scripts/
+│
+├── README.md
+└── LICENSE
+└── .github/
+```
 
 # Architecture
 
