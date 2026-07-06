@@ -53,91 +53,100 @@ The platform follows a polyglot microservices architecture where each service ow
 ```text
 retail-store-v2-platform-engineering/
 
-├── applications/             # Retail Store application source code
-│   ├── ui/                   # Spring Boot UI
-│   ├── catalog/              # Go Catalog Service
-│   ├── cart/                 # Spring Boot Cart Service
-│   ├── checkout/             # Node.js Checkout Service
-│   ├── orders/               # Spring Boot Orders Service
-│   ├── load-generator/       # Load testing
-│   ├── e2e/                  # End-to-end testing
-│   ├── misc/                 # Supporting application resources
-│   └── docker-compose.yaml   # Local development environment
+├── applications/                    # Retail Store application source
+│   ├── ui/
+│   ├── catalog/
+│   ├── carts/
+│   ├── checkout/
+│   ├── orders/
+│   ├── load-generator/
+│   ├── app/
+│   ├── e2e/
+│   ├── misc/
+│   └── docker-compose.yaml
 │
+├── terraform/
+│   ├── backend/                     # Remote state bootstrap
+│   ├── vpc/                         # Production VPC
+│   ├── environments/
+│   │   └── production/              # Amazon EKS Cluster
+│   │
+│   ├── platform/
+│   │   └── bootstrap/               # Platform add-ons
+│   │       ├── Metrics Server
+│   │       ├── EKS Pod Identity Agent
+│   │       ├── Amazon EBS CSI Driver
+│   │       ├── AWS Load Balancer Controller
+│   │       ├── Secrets Store CSI Driver
+│   │       └── AWS Secrets Provider (ASCP)
+│   │
+│   └── dataplane/
+│       ├── catalog-mysql/           # Amazon RDS MySQL
+│       ├── carts-dynamodb/          # Amazon DynamoDB
+│       ├── checkout-redis/          # Amazon ElastiCache Redis
+│       ├── orders-postgresql/       # Amazon RDS PostgreSQL + Amazon SQS
+│       └── README.md
 │
-terraform/                  # Infrastructure as Code 
-├── backend/
-├── vpc/
-└── environments/
-│  └── production/
-│
-│
-platform/           # eks add-ons
-├── bootstrap/
-│   ├── metrics-server/
-│   ├── pod-identity/
-│   └── ebs-csi-driver/
-│
-│
-├── kubernetes/               # Kubernetes raw manifests
+├── kubernetes/                      # Kubernetes manifests
 │   ├── namespaces/
 │   ├── ui/
 │   ├── catalog/
-│   ├── cart/
+│   ├── carts/
 │   ├── checkout/
 │   ├── orders/
 │   └── common/
 │
+├── helm/                            # Helm Charts
+│   ├── ui/
+│   ├── catalog/
+│   ├── carts/
+│   ├── checkout/
+│   └── orders/
 │
-├── networking/               # Ingress, DNS, TLS (future)
+├── networking/                      # Networking & ingress
 │   ├── aws-load-balancer-controller/
+│   ├── external-dns/
 │   ├── cert-manager/
-│   └── external-dns/  
+│   └── route53/
 │
-│
-├── helm/                   # Helm charts
-    ├── ui
-│   ├── catalog
-│   ├── cart
-│   ├── checkout
-│   ├── orders               
-│            
-│
-├── observability/           # Monitoring, Logging & Tracing
+├── observability/
 │   ├── adot/
 │   ├── prometheus/
 │   ├── grafana/
 │   ├── cloudwatch/
 │   └── xray/
 │
-├── docs/                    # Documentation
+├── docs/
 │   ├── architecture/
 │   ├── adr/
 │   ├── diagrams/
 │   └── runbooks/
 │
-├── scripts/                 # Platform scripts
+├── scripts/
 │
-└── .github/                 # Github workflows
+└── .github/
+    └── workflows/
 ```
 
 > **Note:** This repository is built incrementally. Some directories represent the target production architecture and will be introduced as the platform evolves.
 
 ---
 
-# Platform Build Roadmap
+# Platform Progress
 
 | Phase | Status |
 |--------|--------|
 | ✅ Containerization | Complete |
+| ✅ Production Networking (VPC) | Complete |
+| ✅ Amazon EKS Platform | Complete |
+| ✅ Platform Bootstrap | Complete |
+| ✅ AWS Managed Dataplane | Complete |
 | 🚧 Kubernetes Native Deployments | In Progress |
-| ⏳ Production Hardening | Planned |
 | ⏳ Helm Packaging | Planned |
 | ⏳ GitOps with ArgoCD | Planned |
 | ⏳ Progressive Delivery (Argo Rollouts) | Planned |
 | ⏳ Observability | Planned |
-| ⏳ Autoscaling & Resilience | Planned |
-| ⏳ Production Operations | Planned |
+| ⏳ Production Hardening | Planned |
 
 ---
 
