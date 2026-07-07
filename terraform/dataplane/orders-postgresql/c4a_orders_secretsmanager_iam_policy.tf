@@ -7,7 +7,7 @@
 
 resource "aws_iam_policy" "orders_secretsmanager_policy" {
 
-  name = "${var.environment_name}-orders-secretsmanager-policy"
+  name = "${var.environment}-orders-secretsmanager-policy"
 
   description = "Allows the Orders microservice to retrieve PostgreSQL credentials from AWS Secrets Manager."
 
@@ -40,7 +40,7 @@ resource "aws_iam_policy" "orders_secretsmanager_policy" {
   tags = merge(
     var.tags,
     {
-      Name = "${var.environment_name}-orders-secretsmanager-policy"
+      Name = "${var.environment}-orders-secretsmanager-policy"
     }
   )
 

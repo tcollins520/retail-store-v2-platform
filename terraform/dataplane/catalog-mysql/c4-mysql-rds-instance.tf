@@ -40,8 +40,8 @@ resource "aws_db_instance" "catalog_mysql" {
   # Database Configuration
   # --------------------------------------------------------------------------
 
-  db_name  = "catalog"
-  username = "admin"
+  db_name                     = "catalog"
+  username                    = "admin"
   manage_master_user_password = true
 
   # --------------------------------------------------------------------------
@@ -100,5 +100,32 @@ resource "aws_db_instance" "catalog_mysql" {
       Database    = "mysql"
     }
   )
+}
 
+################################################################################
+# Outputs
+################################################################################
+
+output "catalog_rds_endpoint" {
+  description = "Amazon RDS MySQL endpoint for the Catalog microservice"
+  value       = aws_db_instance.catalog_mysql.endpoint
+}
+
+output "catalog_rds_hostname" {
+  value = aws_db_instance.catalog_mysql.address
+}
+
+output "catalog_rds_port" {
+  description = "Amazon RDS MySQL port"
+  value       = aws_db_instance.catalog_mysql.port
+}
+
+output "catalog_rds_database" {
+  description = "Catalog database name"
+  value       = aws_db_instance.catalog_mysql.db_name
+}
+
+output "catalog_master_secret_arn" {
+  description = "Secrets Manager secret ARN for the Catalog database"
+  value       = aws_db_instance.catalog_mysql.master_user_secret[0].secret_arn
 }

@@ -1,6 +1,6 @@
 # IAM Policy to Allow Orders Microservice Access to SQS
 resource "aws_iam_policy" "orders_sqs_policy" {
-  name        = "${var.environment_name}-orders-sqs-policy"
+  name        = "${var.environment}-orders-sqs-policy"
   description = "Allow Orders microservice to interact with Amazon SQS"
 
   policy = jsonencode({

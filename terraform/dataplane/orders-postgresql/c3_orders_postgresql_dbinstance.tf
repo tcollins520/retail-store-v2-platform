@@ -1,6 +1,6 @@
 resource "aws_db_instance" "orders_postgresql" {
 
-  identifier = "${var.environment_name}-orders-postgresql"
+  identifier = "${var.environment}-orders-postgresql"
 
   engine = "postgres"
 
@@ -45,10 +45,22 @@ resource "aws_db_instance" "orders_postgresql" {
   tags = merge(
     var.tags,
     {
-      Name        = "${var.environment_name}-orders-postgresql"
+      Name        = "${var.environment}-orders-postgresql"
       Application = "orders"
       Database    = "postgresql"
     }
   )
 
+}
+################################################################################
+# Outputs
+################################################################################
+output "orders_master_secret_arn" {
+  description = "Secrets Manager secret ARN for the Orders database"
+  value       = aws_db_instance.orders_postgresql.master_user_secret[0].secret_arn
+}
+
+output "orders_rds_hostname" {
+  description = "Amazon RDS PostgreSQL hostname"
+  value       = aws_db_instance.orders_postgresql.address
 }

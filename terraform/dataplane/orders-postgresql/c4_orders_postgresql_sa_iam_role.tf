@@ -43,14 +43,14 @@ data "aws_iam_policy_document" "orders_assume_role" {
 
 resource "aws_iam_role" "orders_pod_identity_role" {
 
-  name = "${var.environment_name}-orders-pod-identity-role"
+  name = "${var.environment}-orders-pod-identity-role"
 
   assume_role_policy = data.aws_iam_policy_document.orders_assume_role.json
 
   tags = merge(
     var.tags,
     {
-      Name        = "${var.environment_name}-orders-pod-identity-role"
+      Name        = "${var.environment}-orders-pod-identity-role"
       Application = "orders"
     }
   )

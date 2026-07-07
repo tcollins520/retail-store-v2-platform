@@ -1,13 +1,13 @@
 # ORDERS - AWS SQS Queue for Asynchronous Order Messaging
 resource "aws_sqs_queue" "orders_sqs_queue" {
-  name                       = "${var.environment_name}-orders-queue"
+  name                       = "${var.environment}-orders-queue"
   message_retention_seconds  = 86400 # 1 day
   visibility_timeout_seconds = 30
   delay_seconds              = 0
   receive_wait_time_seconds  = 10
 
   tags = {
-    Name        = "${var.environment_name}-orders-queue"
+    Name        = "${var.environment}-orders-queue"
     Component   = "Orders"
     Environment = var.environment_name
   }
