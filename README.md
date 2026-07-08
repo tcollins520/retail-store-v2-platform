@@ -52,8 +52,8 @@ The platform follows a polyglot microservices architecture where each service ow
 
 ```text
 retail-store-v2-platform-engineering/
-
-├── applications/                    # Retail Store application source
+│
+├── applications/                          # Retail Store application source
 │   ├── ui/
 │   ├── catalog/
 │   ├── carts/
@@ -66,50 +66,50 @@ retail-store-v2-platform-engineering/
 │   └── docker-compose.yaml
 │
 ├── terraform/
-│   ├── backend/                     # Remote state bootstrap
-│   ├── vpc/                         # Production VPC
+│   ├── backend/                           # Remote state bootstrap
+│   ├── vpc/                               # Production VPC
 │   ├── environments/
-│   │   └── production/              # Amazon EKS Cluster
+│   │   └── production/                    # Amazon EKS Cluster
 │   │
 │   ├── platform/
-│   │   └── bootstrap/               # Platform add-ons
-│   │       ├── Metrics Server
-│   │       ├── EKS Pod Identity Agent
-│   │       ├── Amazon EBS CSI Driver
-│   │       ├── AWS Load Balancer Controller
-│   │       ├── Secrets Store CSI Driver
-│   │       └── AWS Secrets Provider (ASCP)
+│   │   ├── bootstrap/                     # Core platform services
+│   │   │   ├── metrics-server/
+│   │   │   ├── pod-identity/
+│   │   │   ├── ebs-csi-driver/
+│   │   │   ├── secrets-store-csi/
+│   │   │   └── aws-secrets-provider/
+│   │   │
+│   │   └── networking/                    # Platform networking
+│   │       ├── aws-load-balancer-controller/
+│   │       ├── external-dns/
+│   │       ├── ingress/
+│   │       └── certificates/
 │   │
-│   └── dataplane/
-│       ├── catalog-mysql/           # Amazon RDS MySQL
-│       ├── carts-dynamodb/          # Amazon DynamoDB
-│       ├── checkout-redis/          # Amazon ElastiCache Redis
-│       ├── orders-postgresql/       # Amazon RDS PostgreSQL + Amazon SQS
+│   └── dataplane/                         # AWS Managed Services
+│       ├── catalog-rds/                   # Amazon RDS MySQL
+│       ├── carts-dynamodb/                # Amazon DynamoDB
+│       ├── checkout-redis/                # Amazon ElastiCache Redis
+│       ├── orders-rds/                    # Amazon RDS PostgreSQL + Amazon SQS
 │       └── README.md
 │
-├── kubernetes/                      # Kubernetes manifests
+├── kubernetes/                            # Kubernetes manifests
 │   ├── namespaces/
-│   ├── ui/
-│   ├── catalog/
-│   ├── carts/
-│   ├── checkout/
-│   ├── orders/
-│   └── common/
-│
-├── helm/                            # Helm Charts
+│   ├── common/
+│   ├── ingress/
 │   ├── ui/
 │   ├── catalog/
 │   ├── carts/
 │   ├── checkout/
 │   └── orders/
 │
-├── networking/                      # Networking & ingress
-│   ├── aws-load-balancer-controller/
-│   ├── external-dns/
-│   ├── cert-manager/
-│   └── route53/
+├── helm/                                # Helm Charts
+│   ├── ui/
+│   ├── catalog/
+│   ├── carts/
+│   ├── checkout/
+│   └── orders/
 │
-├── observability/
+├── observability/                      
 │   ├── adot/
 │   ├── prometheus/
 │   ├── grafana/
@@ -118,37 +118,72 @@ retail-store-v2-platform-engineering/
 │
 ├── docs/
 │   ├── architecture/
-│   ├── adr/
 │   ├── diagrams/
-│   └── runbooks/
+│   ├── adr/
+│   ├── runbooks/
+│   └── screenshots/
 │
 ├── scripts/
 │
-└── .github/
-    └── workflows/
+├── .github/
+│   └── workflows/
+│
+├── LICENSE
+├── README.md
+├── package.json
+└── yarn.lock
 ```
 
-> **Note:** This repository is built incrementally. Some directories represent the target production architecture and will be introduced as the platform evolves.
+> **Note:** Retail Store v2 is built incrementally. Some directories represent the target production architecture and will be introduced as the platform evolves through future milestones.
 
 ---
 
 # Platform Progress
 
-| Phase | Status |
-|--------|--------|
+| Platform Layer | Status |
+|----------------|--------|
 | ✅ Containerization | Complete |
-| ✅ Production Networking (VPC) | Complete |
+| ✅ Production VPC | Complete |
 | ✅ Amazon EKS Platform | Complete |
 | ✅ Platform Bootstrap | Complete |
 | ✅ AWS Managed Dataplane | Complete |
-| 🚧 Kubernetes Native Deployments | In Progress |
-| ⏳ Helm Packaging | Planned |
-| ⏳ GitOps with ArgoCD | Planned |
+| ✅ Kubernetes Native Deployments | Complete |
+| ✅ AWS Load Balancer Controller | Complete |
+| ✅ ExternalDNS | Complete |
+| ✅ Route53 Integration | Complete |
+| ✅ ACM HTTPS | Complete |
+| ⏳ Helm Charts | In Progress |
+| ⏳ GitOps (Argo CD) | Planned |
 | ⏳ Progressive Delivery (Argo Rollouts) | Planned |
 | ⏳ Observability | Planned |
 | ⏳ Production Hardening | Planned |
-
 ---
+
+# Current Platform
+
+The platform currently includes the following production capabilities:
+
+- ✅ Amazon EKS 1.34
+- ✅ Production VPC
+- ✅ Amazon RDS MySQL
+- ✅ Amazon RDS PostgreSQL
+- ✅ Amazon DynamoDB
+- ✅ Amazon ElastiCache Redis
+- ✅ AWS Secrets Manager
+- ✅ Amazon EBS CSI Driver
+- ✅ AWS Secrets Store CSI Driver
+- ✅ Amazon EKS Pod Identity
+- ✅ AWS Load Balancer Controller
+- ✅ ExternalDNS
+- ✅ Amazon Route53
+- ✅ ACM Wildcard Certificate
+- ✅ Internet-facing AWS Application Load Balancer
+- ✅ Secure HTTPS Endpoint
+
+### Live Application
+
+**https://shop.tinacloud.dev**
+
 
 # High-Level Architecture
 
