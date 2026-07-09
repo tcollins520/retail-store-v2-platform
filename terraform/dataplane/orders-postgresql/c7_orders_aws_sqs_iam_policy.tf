@@ -14,9 +14,7 @@ resource "aws_iam_policy" "orders_sqs_policy" {
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
-          "sqs:GetQueueUrl",
-          "sqs:ListQueues",
-          "sqs:PurgeQueue"
+          "sqs:GetQueueUrl"
         ]
         Resource = aws_sqs_queue.orders_sqs_queue.arn
       }
