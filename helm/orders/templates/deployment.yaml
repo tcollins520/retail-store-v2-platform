@@ -35,7 +35,7 @@ spec:
 {{- end }}
 
 {{- if .Values.opentelemetry.enabled }}
-        instrumentation.opentelemetry.io/inject-sdk: {{ .Values.opentelemetry.instrumentation.name }}
+        instrumentation.opentelemetry.io/{{ .Values.opentelemetry.injectAnnotation }}: "{{ .Values.opentelemetry.instrumentation.name }}"
 {{- end }}
 
       labels:

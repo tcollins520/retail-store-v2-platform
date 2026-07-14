@@ -169,9 +169,7 @@ podAnnotations:
 # ----------------------------------------------------------------------------
 opentelemetry:
   enabled: true
+  injectAnnotation: inject-java
 
   instrumentation:
-    name: default-instrumentation
-
-  exporter:
-    endpoint: ""
+    name: observability/retail-auto-instrumentation
