@@ -135,10 +135,15 @@ podAnnotations:
 opentelemetry:
   enabled: true
 
-  instrumentation:
-    name: default-instrumentation
+  sdk:
+    disabled: "false"
+    endpoint: http://retail-traces-collector.observability:4318
+    protocol: http/protobuf
 
-  exporter:
-    endpoint: ""
+    tracesExporter: otlp
+    metricsExporter: none
+    logsExporter: none
+
+    serviceName: checkout
 
   
