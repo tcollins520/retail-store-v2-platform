@@ -1,8 +1,7 @@
 terraform {
-  # Minimum Terraform CLI version required
+
   required_version = ">= 1.12.0"
 
-  # Required providers and version constraints
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -10,10 +9,9 @@ terraform {
     }
   }
 
-  # Remote backend configuration using S3 
   backend "s3" {
     bucket       = "tfstate-prod-us-east-1-h168du"
-    key          = "eks/prod/terraform.tfstate"
+    key          = "platform/github-actions-oidc/prod/terraform.tfstate"
     region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
@@ -21,6 +19,5 @@ terraform {
 }
 
 provider "aws" {
-  # AWS region to use for all resources (from variables)
   region = var.aws_region
 }

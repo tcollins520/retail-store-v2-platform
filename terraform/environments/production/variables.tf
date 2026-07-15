@@ -79,7 +79,7 @@ variable "cluster_endpoint_public_access_cidrs" {
 variable "tags" {
   description = "Tags to apply to EKS and related resources"
   type        = map(string)
-  default     = {
+  default = {
     Terraform = "true"
   }
 }
@@ -106,6 +106,6 @@ variable "node_capacity_type" {
 variable "node_disk_size" {
   description = "Disk size in GiB for worker nodes"
   type        = number
-  default     = 20
+  default     = 50
 }
 
