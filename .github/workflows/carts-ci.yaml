@@ -94,7 +94,7 @@ jobs:
           docker build \
             -t ${{ steps.vars.outputs.image_uri }}:latest \
             -t ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} \
-            applications/carts
+            applications/cart
 
 ################################################################################
 # Trivy Scan
