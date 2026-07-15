@@ -1,0 +1,192 @@
+name: Catalog CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - applications/catalog/**
+      - .github/workflows/catalog-ci.yaml
+
+permissions:
+  id-token: write
+  contents: write
+
+################################################################################
+# Cancel older builds when new commits are pushed
+################################################################################
+concurrency:
+  group: catalog-ci
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: retail-store-v2/catalog
+
+jobs:
+
+################################################################################
+# Build & Publish Catalog Image
+################################################################################
+
+  build:
+
+    name: Build & Publish Catalog Image
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      image-tag: ${{ steps.vars.outputs.sha_tag }}
+      image-uri: ${{ steps.vars.outputs.image_uri }}
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::162663626265:role/github-actions-oidc-role-retail-v2
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+################################################################################
+# Image Variables
+################################################################################
+
+      - name: Set Image Variables
+        id: vars
+        run: |
+
+          SHA_TAG=sha-${GITHUB_SHA::7}
+          IMAGE_URI=${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+
+          echo "sha_tag=$SHA_TAG" >> $GITHUB_OUTPUT
+          echo "image_uri=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+################################################################################
+# Docker Buildx
+################################################################################
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+################################################################################
+# Helm Lint
+################################################################################
+
+      - name: Helm Lint
+        run: |
+
+          helm lint helm/catalog
+
+################################################################################
+# Build Image
+################################################################################
+
+      - name: Build Docker Image
+        run: |
+
+          docker build \
+            -t ${{ steps.vars.outputs.image_uri }}:latest \
+            -t ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }} \
+            applications/catalog
+
+################################################################################
+# Trivy Scan
+################################################################################
+
+      - name: Scan Docker Image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
+          format: table
+          exit-code: 1
+          severity: CRITICAL
+
+################################################################################
+# Push Images
+################################################################################
+
+      - name: Push Docker Images
+        run: |
+
+          docker push ${{ steps.vars.outputs.image_uri }}:latest
+          docker push ${{ steps.vars.outputs.image_uri }}:${{ steps.vars.outputs.sha_tag }}
+
+################################################################################
+# GitOps Update
+################################################################################
+
+  gitops:
+
+    name: Update GitOps Repository
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout GitOps Repository
+        uses: actions/checkout@v4
+        with:
+          repository: tcollins520/retail-store-v2-gitops
+          ref: main
+          token: ${{ secrets.GITOPS_PAT }}
+          path: gitops
+
+################################################################################
+# Update Helm Values
+################################################################################
+
+      - name: Update Catalog Image Tag
+        run: |
+
+          cd gitops
+
+          sed -i \
+            "s|tag: .*|tag: \"${{ needs.build.outputs.image-tag }}\"|" \
+            environments/production/catalog/values.yaml
+
+################################################################################
+# Commit Changes
+################################################################################
+
+      - name: Commit Changes
+        run: |
+
+          cd gitops
+
+          git config user.name "Platform Engineering Bot"
+          git config user.email "platform@tinacloud.dev"
+
+          git add .
+
+          if ! git diff --cached --quiet; then
+
+            git commit -m \
+            "ci(catalog): update image tag to ${{ needs.build.outputs.image-tag }}"
+
+            git push
+
+          else
+
+            echo "GitOps already up to date"
+
+          fi
+
+################################################################################
+# Complete
+################################################################################
+
+      - name: Complete
+        run: |
+
+          echo "Catalog deployment updated."
+
+          echo "Argo CD will reconcile automatically."
