@@ -4,7 +4,7 @@ resource "aws_db_instance" "orders_postgresql" {
 
   engine = "postgres"
 
-  engine_version = "17.6"
+  engine_version = "17.9"
 
   instance_class = "db.t4g.micro"
 
@@ -20,7 +20,7 @@ resource "aws_db_instance" "orders_postgresql" {
 
   username = "postgres"
 
-  manage_master_user_password = true
+  password = var.orders_db_password
 
   db_subnet_group_name = aws_db_subnet_group.orders_postgresql.name
 

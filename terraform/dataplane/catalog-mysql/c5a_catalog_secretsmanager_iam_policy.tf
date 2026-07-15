@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
 # IAM Policy for the Catalog microservice
 #
-# Grants read-only access to the MySQL credentials stored in
+# Grants read-only access to the Catalog credentials stored in
 # AWS Secrets Manager.
 # ------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ resource "aws_iam_policy" "catalog_secretsmanager_policy" {
 
         ]
 
-        Resource = aws_db_instance.catalog_mysql.master_user_secret[0].secret_arn
+        Resource = aws_secretsmanager_secret.catalog_db.arn
 
       }
 

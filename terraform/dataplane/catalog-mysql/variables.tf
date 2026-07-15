@@ -15,6 +15,12 @@ variable "environment" {
   type        = string
 }
 
+variable "catalog_db_password" {
+  description = "Catalog database password"
+  type        = string
+  sensitive   = true
+}
+
 variable "business_division" {
   description = "Business division"
   type        = string

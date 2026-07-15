@@ -102,7 +102,7 @@ database:
 # ----------------------------------------------------------------------------
 secrets:
   awsRegion: us-east-1
-  secretName: rds!db-4cff416a-ccff-4333-86cc-53f94d3366e0
+  secretName: production/catalog/database
   secretProviderClass: catalog-db-secrets
 
 # ----------------------------------------------------------------------------

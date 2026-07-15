@@ -40,9 +40,9 @@ resource "aws_db_instance" "catalog_mysql" {
   # Database Configuration
   # --------------------------------------------------------------------------
 
-  db_name                     = "catalog"
-  username                    = "admin"
-  manage_master_user_password = true
+  db_name  = "catalog"
+  username = local.catalog_db_username
+  password = var.catalog_db_password
 
   # --------------------------------------------------------------------------
   # Networking
@@ -123,9 +123,4 @@ output "catalog_rds_port" {
 output "catalog_rds_database" {
   description = "Catalog database name"
   value       = aws_db_instance.catalog_mysql.db_name
-}
-
-output "catalog_master_secret_arn" {
-  description = "Secrets Manager secret ARN for the Catalog database"
-  value       = aws_db_instance.catalog_mysql.master_user_secret[0].secret_arn
 }

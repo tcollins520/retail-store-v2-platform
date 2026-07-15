@@ -1,17 +1,27 @@
 terraform {
 
-  # Minimum Terraform CLI version required
+  # --------------------------------------------------------------------------
+  # Minimum Terraform CLI version
+  # --------------------------------------------------------------------------
+
   required_version = ">= 1.12.0"
 
-  # Required providers
+  # --------------------------------------------------------------------------
+  # Required Providers
+  # --------------------------------------------------------------------------
+
   required_providers {
+
     aws = {
       source  = "hashicorp/aws"
       version = ">= 6.0"
     }
   }
 
-  # Remote backend configuration using S3
+  # --------------------------------------------------------------------------
+  # Remote State Backend
+  # --------------------------------------------------------------------------
+
   backend "s3" {
     bucket       = "tfstate-prod-us-east-1-h168du"
     key          = "dataplane/catalog-mysql/prod/terraform.tfstate"
@@ -21,6 +31,10 @@ terraform {
   }
 
 }
+
+# ------------------------------------------------------------------------------
+# AWS Provider
+# ------------------------------------------------------------------------------
 
 provider "aws" {
 

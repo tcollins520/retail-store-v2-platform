@@ -108,7 +108,7 @@ database:
 # ----------------------------------------------------------------------------
 secrets:
   awsRegion: us-east-1
-  secretName: rds!db-f93868c7-6d9c-445d-b38a-572b3900e3a7
+  secretName: production/orders/database
   secretProviderClass: orders-db-secrets
 
 # ----------------------------------------------------------------------------

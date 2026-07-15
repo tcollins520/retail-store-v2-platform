@@ -29,7 +29,7 @@ resource "aws_iam_policy" "orders_secretsmanager_policy" {
 
         ]
 
-        Resource = aws_db_instance.orders_postgresql.master_user_secret[0].secret_arn
+        Resource = aws_secretsmanager_secret.orders_db.arn
 
       }
 

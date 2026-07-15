@@ -21,6 +21,12 @@ variable "environment" {
   type        = string
 }
 
+variable "orders_db_password" {
+  description = "Orders PostgreSQL password"
+  type        = string
+  sensitive   = true
+}
+
 variable "tags" {
   description = "Common tags applied to all resources"
 
