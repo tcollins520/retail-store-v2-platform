@@ -96,8 +96,13 @@ app:
 # ----------------------------------------------------------------------------
 autoscaling:
   enabled: true
-  minReplicas: 1
+
+  apiVersion: apps/v1
+  kind: Deployment
+
+  minReplicas: 2
   maxReplicas: 12
+
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
 
@@ -159,3 +164,24 @@ opentelemetry:
     logsExporter: none
 
     serviceName: carts
+
+# ----------------------------------------------------------------------------
+# AUTOSCALING - HORIZONTAL POD AUTOSCALER (HPA)
+# ----------------------------------------------------------------------------
+  autoscaling:
+
+    enabled: true
+
+    apiVersion: apps/v1
+    kind: Deployment
+
+    minReplicas: 2
+    maxReplicas: 10
+
+    cpu:
+      enabled: true
+      targetUtilization: 70
+
+    memory:
+      enabled: true
+      targetUtilization: 80

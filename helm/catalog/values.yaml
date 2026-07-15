@@ -110,10 +110,16 @@ secrets:
 # ----------------------------------------------------------------------------
 autoscaling:
   enabled: true
+
+  apiVersion: argoproj.io/v1alpha1
+  kind: Rollout
+
   minReplicas: 2
   maxReplicas: 12
+
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
+
 
 # ----------------------------------------------------------------------------
 # KARPENTER NODE SELECTION
@@ -174,4 +180,3 @@ opentelemetry:
     endpoint: http://retail-traces-collector.observability:4318
     protocol: http/protobuf
     serviceName: catalog
-  
