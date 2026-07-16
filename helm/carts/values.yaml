@@ -90,27 +90,26 @@ app:
     catalog: http://catalog
     carts: http://carts
     checkout: http://checkout
-    orders: http://orders
+    orders: http://orders 
     
 # AUTOSCALING - HORIZONTAL POD AUTOSCALER (HPA)
 # ----------------------------------------------------------------------------
- autoscaling:
+autoscaling:
+  enabled: true
 
+  apiVersion: apps/v1
+  kind: Deployment
+
+  minReplicas: 2
+  maxReplicas: 10
+
+  cpu:
     enabled: true
+    targetUtilization: 70
 
-    apiVersion: apps/v1
-    kind: Deployment
-
-    minReplicas: 2
-    maxReplicas: 10
-
-    cpu:
-      enabled: true
-      targetUtilization: 70
-
-    memory:
-      enabled: true
-      targetUtilization: 80
+  memory:
+    enabled: true
+    targetUtilization: 80
 
 # ----------------------------------------------------------------------------
 # KARPENTER NODE SELECTION
