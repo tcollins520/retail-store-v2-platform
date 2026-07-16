@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - applications/catalog/**
+      - helm/catalog/**
       - .github/workflows/catalog-ci.yaml
 
 permissions:

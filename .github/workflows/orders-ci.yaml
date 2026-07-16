@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - applications/orders/**
+      - helm/orders/**
       - .github/workflows/orders-ci.yaml
 
 permissions:

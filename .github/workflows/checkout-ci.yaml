@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - applications/checkout/**
+      - helm/checkout/**
       - .github/workflows/checkout-ci.yaml
 
 permissions:

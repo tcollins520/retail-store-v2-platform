@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - applications/cart/**
+      - helm/carts/**
       - .github/workflows/carts-ci.yaml
 
 permissions:
