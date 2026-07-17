@@ -19,6 +19,7 @@ spec:
       trafficRouting:
         alb:
           ingress: {{ include "ui.fullname" . }}
+          servicePort: {{ .Values.service.port }}
 
       steps:
         - setWeight: 25
