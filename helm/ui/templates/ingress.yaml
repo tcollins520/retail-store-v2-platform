@@ -24,7 +24,7 @@ spec:
 
             backend:
               service:
-                name: {{ include "ui.fullname" . }}-stable
+                name: {{ include "ui.fullname" . }}-active
 
                 port:
                   number: {{ .Values.service.port }}
